@@ -1,0 +1,12 @@
+.chatbox {
+  height: 450px;
+}
+#messages {
+  height: 15em;
+  overflow: auto;
+}
+#messages::-webkit-scrollbar {
+  display: none;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
