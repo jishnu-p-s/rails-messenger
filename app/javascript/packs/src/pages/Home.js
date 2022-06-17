@@ -19,7 +19,7 @@ function Home({ username }) {
     if (!group) {
       return;
     }
-    if (group) {
+    if (group !== "NIL") {
       getMessages(group);
     }
   }, [group]);

@@ -16,7 +16,7 @@ class Api::V1::UsersController < ApplicationController
       else
         new_chat = Group.new(title: chat_name, user_ids: [to_user.id,@current_user.id])
         if new_chat.save
-          render status: :ok, json: {}
+          render json: { success: true,group: new_chat.id }
         else
           render json: {success: false, msg: "Error"}
         end
