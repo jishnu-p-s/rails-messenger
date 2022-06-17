@@ -1,5 +1,5 @@
-import React from "react";
-import { useRoutes, navigate } from "hookrouter";
+import React, { useEffect } from "react";
+import { useRoutes } from "hookrouter";
 import Home from "./pages/Home";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
@@ -16,14 +16,14 @@ const publicroutes = {
   "/login": () => <Login />,
 };
 const authRoutes = {
-  "/": () => <Home />,
+  "/user/:username": ({ username }) => <Home username={username} />,
   "/users": () => <Users />,
+  "/": () => <Users />,
 };
 const App = () => {
   const publicRoutes = useRoutes(publicroutes);
   const auth = useRoutes(authRoutes);
   const { user, loading } = useLogin();
-
   const Notfound = () => (
     <div style={{ width: "100%", textAlign: "center", marginTop: "20%" }}>
       Error 404: Page not found

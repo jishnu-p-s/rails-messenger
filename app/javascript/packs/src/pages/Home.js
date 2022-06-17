@@ -1,19 +1,38 @@
 import React, { useEffect, useState } from "react";
-import { getMessages, postMessage } from "../helpers/apiRequest";
+import { getMessages, getUser, postMessage } from "../helpers/apiRequest";
 import { isEmptyOrSpaces } from "../helpers/functions";
 import MessagesChannel from "channels/messages_channel";
 import "channels";
 import SideNav from "../components/SideNav";
 
-function Home() {
+function Home({ username }) {
   const [data, setdata] = useState([]);
   const [msg, setmsg] = useState("");
+  const [group, setgroup] = useState(null);
   const [loading, setloading] = useState(false);
-
   useEffect(() => {
-    getMessages();
-    MessagesChannel.received = (response) => setdata(response?.messages ?? []);
+    getUser(username).then((res) => {
+      setgroup(res.data.group || "NIL");
+    });
   }, []);
+  useEffect(() => {
+    if (!group) {
+      return;
+    }
+    if (group) {
+      getMessages(group);
+    }
+  }, [group]);
+  useEffect(() => {
+    if (!group) {
+      return;
+    }
+    MessagesChannel.received = (response) => {
+      if (Number(group) === Number(response.group_id)) {
+        setdata(response?.messages ?? []);
+      }
+    };
+  }, [group]);
   useEffect(() => {
     const messageList = document.getElementById("messages");
     messages.scrollTo(0, messageList.scrollHeight + 23);
@@ -23,7 +42,7 @@ function Home() {
     if (!isEmptyOrSpaces(msg) && !loading) {
       setmsg("");
       setloading(true);
-      postMessage({ body: msg }).then(() => {
+      postMessage({ body: msg, group_id: group }).then(() => {
         setloading(false);
       });
     }
@@ -42,8 +61,20 @@ function Home() {
               <div className="ui feed">
                 {data.map((message) => (
                   <div key={message.id} className="event">
-                    <div className="content">
-                      <div className="summary">
+                    <div
+                      style={{
+                        backgroundColor:
+                          username === message.username
+                            ? "lightgreen"
+                            : "lightgray",
+                      }}
+                      className="content ui segment"
+                    >
+                      <div
+                        className={`summary ${
+                          username === message?.username ? "left" : "right"
+                        } aligned`}
+                      >
                         <em>{message?.username} </em>:{` ${message.body}`}
                       </div>
                     </div>

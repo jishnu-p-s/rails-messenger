@@ -8,8 +8,7 @@ export const postMessage = (payload) =>
   });
 export const getMessages = (payload) =>
   fireRequest({
-    payload,
-    params: `/messages`,
+    params: `/messages/${payload}`,
   });
 export const login = (payload) =>
   fireRequest({
@@ -37,4 +36,8 @@ export const signup = (payload) =>
 export const getAllUsers = () =>
   fireRequest({
     params: "/users",
+  });
+export const getUser = (username) =>
+  fireRequest({
+    params: `/users/${username}`,
   });

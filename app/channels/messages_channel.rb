@@ -1,13 +1,18 @@
 class MessagesChannel < ApplicationCable::Channel
+  #before_action :require_user
   def subscribed
-    stream_from 'messages'
+    stream_from "messages"
     @messages = Message.all
-    @result=[]
+    @result = []
     @messages.each do |message|
-      messageObject={username: message.user.username, id: message.id, body: message.body}
+      messageObject = {
+        username: message.user.username,
+        id: message.id,
+        body: message.body
+      }
       @result << messageObject
     end
-    ActionCable.server.broadcast('messages', { messages: @result })
+   ActionCable.server.broadcast("messages", { messages: @result })
   end
 
   def unsubscribed

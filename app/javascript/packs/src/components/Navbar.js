@@ -8,25 +8,37 @@ function Navbar() {
   return (
     <div className="ui small inverted menu">
       <div className="ui container">
-        <A href="/" className="item">
+        <A href="/users" className="item">
           Chatroom
         </A>
         <a className="item">Messages</a>
         <div className="right menu">
           {user ? (
-            <A
-              href="#"
-              onClick={() => {
-                logout().then(() => {
-                  sessionStorage.removeItem("session_id");
-                  sessionStorage.removeItem("_csrf_token");
-                  window.location.reload(false);
-                });
-              }}
-              className="item"
-            >
-              Log out
-            </A>
+            <>
+              <p
+                style={{
+                  color: "white",
+                  height: "100%",
+                  display: "grid",
+                  alignItems: "center",
+                }}
+              >
+                {user}
+              </p>
+              <A
+                href="#"
+                onClick={() => {
+                  logout().then(() => {
+                    sessionStorage.removeItem("session_id");
+                    sessionStorage.removeItem("_csrf_token");
+                    window.location.reload(false);
+                  });
+                }}
+                className="item"
+              >
+                Log out
+              </A>
+            </>
           ) : (
             <>
               <A href="/login" className="item">

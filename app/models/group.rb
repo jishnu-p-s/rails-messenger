@@ -1,5 +1,5 @@
-class User < ApplicationRecord
-  validates :username,
+class Group < ApplicationRecord
+  validates :title,
             presence: true,
             length: {
               minimum: 3,
@@ -8,8 +8,6 @@ class User < ApplicationRecord
             uniqueness: {
               case_sensitive: false
             }
-  has_many :messages
   has_many :user_groups
-  has_many :groups, through: :user_groups
-  has_secure_password
+  has_many :users, through: :user_groups
 end
